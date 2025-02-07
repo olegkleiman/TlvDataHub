@@ -70,32 +70,35 @@ const books = [
 
 const resolvers = {
     Mutation: {
-        setProfilePicture: async (_, {user}, context, info) => {
+        setProfilePicture: async (_, {base64}, {user}, info) => {
             try {
 
+                const host = process.env.REDIS_HOST
+                const port = process.env.REDIS_PORT
+                const url = `rediss://${host}:${port}`
+
+                // Connect to Redis client.
+                // See https://github.com/redis/node-redis/blob/master/docs/client-configuration.md
                 const redisClient = createClient({
-                    port: 6380,
-                    host: "tlvbox-poc.redis.cache.windows.net",
-                    password: "LLqOpPPjkxathpwwWEcskVWeShSDuEnshAzCaPymgAE=",
-                    // url: 'redis://:LLqOpPPjkxathpwwWEcskVWeShSDuEnshAzCaPymgAE=@tlvbox-poc.redis.cache.windows.net:6380/8',
-                    // url: 'redis://@localhost:6379',
-                    socket: {
-                        connectTimeout: 10000, // in milliseconds
-                        reconnectStrategy: function(retries) {
-                            if(retries > 4) {
-                                console.error("Too many attempts to reconnect. Redis connection was terminated");
-                                return new Error("Too many retries.");
-                            } else {
-                                // The default strategy is to calculate the delay before each attempt based on the attempt number Math.min(retries * 50, 500)
-                                return retries * 500;
-                            }
-                        }
-                    }
+                    url,
+                    password: process.env.REDIS_PASSWORD,
+                    database: process.env.REDIS_DB_NUMBER,
+                    tls: {},
                 })
                 redisClient.on('error', err => {
                     console.error('Redis client error', err)
                 })
+                redisClient.on('connect', () => {
+                    console.log('Connected to redis server')
+                });
+
                 await redisClient.connect()
+
+                console.log(`Response from PING: ${await redisClient.ping()}`)
+
+                redisClient.hSet(`profiles:${user.userId}`, {
+                    profile_picture: base64
+                })
 
             } catch(ex) {
                 console.error(ex.message)
