@@ -21,7 +21,7 @@ export async function startApolloServer(typeDefs, resolvers) {
         listen: { port: 4000 },
         context: async ({ req, res }) => {
 
-            const user = authenticateUser(req)
+            const user = await authenticateUser(req)
             // add the user to the context
             return { user };
 
