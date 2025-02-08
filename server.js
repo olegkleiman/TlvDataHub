@@ -17,8 +17,9 @@ export async function startApolloServer(typeDefs, resolvers) {
         includeStacktraceInErrorResponses: false // see: https://www.apollographql.com/docs/apollo-server/data/errors
     });
 
+    const PORT = process.env.PORT || 4000;
     await startStandaloneServer(server, {
-        listen: { port: 4000 },
+        listen: { port: PORT },
         context: async ({ req, res }) => {
 
             const user = await authenticateUser(req)
