@@ -19,6 +19,7 @@ export const typeDefs = `#graphql
         phoneNumber: String
         userId: String,
         profilePicture: String
+        parkingTickets: [ParkingTicket]
     }
 
     type Error {
@@ -27,10 +28,22 @@ export const typeDefs = `#graphql
 
     union MeResult = User | Error
 
-    type TaxAccount implements Node{
+    type TaxAccount implements Node {
         id: ID!
         city: String!
         amount: Float!
+    }
+
+    type ParkingTicket implements Node {
+        id: ID!
+        ticketNumber: String!
+        vehicleNumber: String!
+        amount: String!
+        issuedAt: String
+        issuedWhen: String!
+        desc: String
+        images: String
+        lastPaymnetDate: String
     }
 
     type Query {

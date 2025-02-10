@@ -1,4 +1,5 @@
 import UserProfileAPI from '../datasources/UserProfileAPI.js'
+import ParkingAPI from '../datasources/ParkingAPI.js';
   
 const books = [
     {
@@ -54,8 +55,8 @@ export const resolvers = {
             if( !resp.ok )
                 throw new Error(`HTTP error! status: ${resp.status}`);
 
-            const taxes = await resp.json();
-            const respRoot = taxes.yitrotLakoach_Response_MT
+            const root = await resp.json();
+            const taxes = root.yitrotLakoach_Response_MT
 
             return [
                     {
@@ -86,6 +87,11 @@ export const resolvers = {
         profilePicture(parent) {
             const api = new UserProfileAPI(parent.userId)
             return api.userPicture
+        },
+
+        parkingTickets: (parent, args, {user}, info) => {
+            const api = new ParkingAPI(parent.userId)
+            return api.tickets
         }
     }
 };

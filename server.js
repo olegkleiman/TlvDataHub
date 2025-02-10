@@ -17,7 +17,13 @@ export async function startApolloServer(typeDefs, resolvers) {
         includeStacktraceInErrorResponses: false // see: https://www.apollographql.com/docs/apollo-server/data/errors
     });
 
-    const PORT = process.env.PORT || 4000;
+    // Passing an ApolloServer instance to the `startStandaloneServer` function:
+    //  1. creates an Express app
+    //  2. installs your ApolloServer instance as middleware
+    //  3. prepares your app to handle incoming requests
+    const PORT = process.env.PORT;
+    console.log(`Port from env: ${process.env.PORT}`)
+
     await startStandaloneServer(server, {
         listen: { port: PORT },
         context: async ({ req, res }) => {
