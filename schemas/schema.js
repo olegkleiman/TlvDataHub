@@ -19,11 +19,41 @@ export const typeDefs = `#graphql
         phoneNumber: String
         userId: String,
         profilePicture: String
-        parkingTickets: [ParkingTicket]
+        cityTaxes: [TaxAccount]
+        parkingTickets(ticketNumber: String): [ParkingTicket]
+    }
+
+    """An edge in a connection."""
+    type UserParkingTicketEdge {
+        """A cursor for use in pagination"""
+        cursor: String!
+
+        """The item at the end of the edge"""
+        node: ParkingTicket
     }
 
     type Error {
         message: String!
+    }
+
+    type PageInfo {
+        """When paginating forwards, the cursor to continue."""
+        endCursor: String
+
+        """When paginating forwards, are there more items?"""
+        hasNextPage: Boolean!
+
+        """When paginating backwards, are there more items?"""
+        hasPreviousPage: Boolean!
+
+        """When paginating backwards, the cursor to continue."""
+        startCursor: String        
+    }
+
+    type UserParkingTicketConnection {
+        edges: [UserParkingTicketEdge]
+    
+        pageInfo: PageInfo!
     }
 
     union MeResult = User | Error
@@ -48,7 +78,7 @@ export const typeDefs = `#graphql
 
     type Query {
         me: User # MeResult
-        cityTaxes: [TaxAccount]
+        
         books: [Book]
     }
 

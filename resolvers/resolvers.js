@@ -27,9 +27,25 @@ export const resolvers = {
     },
 
     Query: {
-
         books: () => books,
         me: (_, args, {user}) => user,
+    },
+    MeResult: {
+        __resolveType(obj, context, info) {
+
+            if( 'name' in obj ) {
+                return 'User';
+            }
+
+            return 'Error'; // throw GraphQLError
+        },
+    },
+    User: {
+
+        profilePicture(parent) {
+            const api = new UserProfileAPI(parent.userId)
+            return api.userPicture
+        },
 
         cityTaxes: async (_, args, {user}, info) => {   
 
@@ -41,9 +57,10 @@ export const resolvers = {
                 }
             }
 
-            var subscriptionKey = process.env.APIM_TAXES_SUBSCRIPTION_KEY;
+            const subscriptionKey = process.env.APIM_TAXES_SUBSCRIPTION_KEY;
+            const url = process.env.CITY_TAXES_URL;
 
-            const resp = await fetch(`https://apimtlvppr.tel-aviv.gov.il/PPR/DigitelYitrotLakoach_OB`, {
+            const resp = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,27 +88,11 @@ export const resolvers = {
                     }
             ];
 
-        }
-    },
-    MeResult: {
-        __resolveType(obj, context, info) {
+        },        
 
-            if( 'name' in obj ) {
-                return 'User';
-            }
-
-            return 'Error'; // throw GraphQLError
-        },
-    },
-    User: {
-        profilePicture(parent) {
-            const api = new UserProfileAPI(parent.userId)
-            return api.userPicture
-        },
-
-        parkingTickets: (parent, args, {user}, info) => {
+        parkingTickets: (parent, {ticketNumber}, {user}, info) => {
             const api = new ParkingAPI(parent.userId)
-            return api.tickets
+            return api.getTickets(ticketNumber)
         }
     }
 };

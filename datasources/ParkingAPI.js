@@ -8,23 +8,35 @@ class ParkingAPI {
         this.#userId = userId
     }
 
-     get tickets () {
+     getTickets (ticketNumber) {
+
+        if( ticketNumber?.length > 10 )
+            return null;
 
         return ( async() => {
 
+            var authenticationType = 4;
+            var userId = this.#userId;
+
+            if( ticketNumber != null ) {
+                userId = null
+                authenticationType = 2
+            } 
+
             const requestPayload = {
                 digitelParkingPaymentsReports_Request_MT: {
-                    reportNumber: null,
-                    carNumber: null,
-                    idNumber: this.#userId, //  "054008222", // "213249337", 
+                    reportNumber: ticketNumber ?? null, // undefined ?? null => null
+                    carNumber: null, 
+                    idNumber: userId,
                     idtype: "1",
-                    authenticationType: "4"
+                    authenticationType: authenticationType
                 }
             }
 
             const subscriptionKey = process.env.APIM_PARKING_TICKETS_KEY;
+            const url = process.env.PARKING_TICKETS_URL
 
-            const resp = await fetch(`https://apimtlvppr.tel-aviv.gov.il/qa/payments-reports`, {
+            const resp = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
