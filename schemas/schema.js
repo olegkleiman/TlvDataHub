@@ -1,5 +1,10 @@
 export const typeDefs = `#graphql
 
+    #directive @defer(
+    #     label: String
+    #     if: Boolean
+    # ) on FRAGMENT_SPREAD | INLINE_FRAGMENT
+
     scalar Date
 
     # An object with a Globally Unique ID

@@ -14,6 +14,7 @@ export async function startApolloServer(typeDefs, resolvers) {
         typeDefs,
         resolvers,
         degug: true,
+        introspection: true,
         includeStacktraceInErrorResponses: false // see: https://www.apollographql.com/docs/apollo-server/data/errors
     });
 
@@ -23,6 +24,7 @@ export async function startApolloServer(typeDefs, resolvers) {
     //  3. prepares your app to handle incoming requests
     const PORT = process.env.PORT;
     console.log(`Port from env: ${process.env.PORT}`)
+    console.log(`Env: ${process.env.NODE_ENV}`)
 
     await startStandaloneServer(server, {
         listen: { port: PORT },
