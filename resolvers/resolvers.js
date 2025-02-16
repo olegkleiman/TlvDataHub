@@ -1,3 +1,5 @@
+import { setTimeout as setTimeout$ } from 'node:timers/promises'
+
 import UserProfileAPI from '../datasources/UserProfileAPI.js'
 import ParkingAPI from '../datasources/ParkingAPI.js';
 import CityTaxesAPI from '../datasources/CityTaxesAPI.js';
@@ -53,11 +55,10 @@ export const resolvers = {
             return api.taxes
         },        
 
-        parkingTickets: (parent, {ticketNumber}, {user}, info) => {
-            setTimeout(function() {
-                const api = new ParkingAPI(parent.userId)
-                return api.getTickets(ticketNumber)    
-            }, 5000)
+        parkingTickets: async (parent, {ticketNumber}, {user}, info) => {
+            await setTimeout$(2000); // Simulate delay
+            const api = new ParkingAPI(parent.userId)
+            return api.getTickets(ticketNumber)    
         }
     }
 };

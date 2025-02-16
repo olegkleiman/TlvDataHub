@@ -1,7 +1,14 @@
 import 'dotenv/config'
 
+// Apollo
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
+
+// Yoga
+import { createSchema, createYoga } from 'graphql-yoga';
+import { createServer } from 'node:http';
+import { useDeferStream } from '@graphql-yoga/plugin-defer-stream';
+
 import { authenticateUser } from './utils/authenticateUser.js';
 
 // const { url } = 
@@ -38,3 +45,28 @@ export async function startApolloServer(typeDefs, resolvers) {
     })
 
 };  
+
+export async function startYogaServer(typeDefs, resolvers) {
+    const yoga = createYoga({
+        schema: createSchema({
+          typeDefs,
+          resolvers
+        }),
+        context: async ({ req, res }) => {
+            const user = await authenticateUser(req)
+            // add the user to the context
+            return { user };
+        },
+        plugins: [useDeferStream()]
+      })
+
+      const server  = createServer(yoga)
+
+      const PORT = process.env.PORT;
+      console.log(`Port from env: ${process.env.PORT}`)
+      console.log(`Env: ${process.env.NODE_ENV}`)
+
+      server.listen(PORT, () => {
+        console.info(`Server is running on http://localhost:${PORT}/graphql`)
+    }) 
+}
