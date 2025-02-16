@@ -60,5 +60,14 @@ export const resolvers = {
             const api = new ParkingAPI(parent.userId)
             return api.getTickets(ticketNumber)    
         }
+    },
+
+    ParkingTicket: {
+        async *pictures(parent, args, {user}, info) {
+            for (const character of ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
+              yield character
+              await setTimeout$(1000)
+            }
+          },
     }
 };

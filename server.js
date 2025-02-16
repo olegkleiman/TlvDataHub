@@ -8,6 +8,7 @@ import { startStandaloneServer } from '@apollo/server/standalone';
 import { createSchema, createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
 import { useDeferStream } from '@graphql-yoga/plugin-defer-stream';
+import { useCSRFPrevention } from '@graphql-yoga/plugin-csrf-prevention'
 
 import { authenticateUser } from './utils/authenticateUser.js';
 
@@ -57,10 +58,18 @@ export async function startYogaServer(typeDefs, resolvers) {
             // add the user to the context
             return { user };
         },
-        plugins: [useDeferStream()]
+        batching: true,
+        logging: 'debug',
+        graphqlEndpoint: '/',
+        plugins: [
+            useDeferStream(),
+            useCSRFPrevention({
+                requestHeaders: ['x-graphql-yoga-csrf'] // default
+              })
+        ]
       })
 
-      const server  = createServer(yoga)
+      const server = createServer(yoga)
 
       const PORT = process.env.PORT;
       console.log(`Port from env: ${process.env.PORT}`)

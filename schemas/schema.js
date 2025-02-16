@@ -78,6 +78,7 @@ export const typeDefs = `#graphql
         issuedWhen: String!
         desc: String
         images: String
+        pictures: [String!]!
         lastPaymnetDate: String
     }
 

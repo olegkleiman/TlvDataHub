@@ -251,6 +251,11 @@
   dependencies:
     tslib "^2.8.1"
 
+"@graphql-yoga/plugin-csrf-prevention@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@graphql-yoga/plugin-csrf-prevention/-/plugin-csrf-prevention-3.11.0.tgz#2472dc954c3f81abb8fe64a1185ad5898a9a1b1f"
+  integrity sha512-hSWA1EQidNZeq7on2C6M4WhJcsFJs+rFxpD6R+ZWKhbn53gUTrjW8hECX2r+JVDQkRkUP8lQim2Iu64f0KoI+A==
+
 "@graphql-yoga/plugin-defer-stream@^3.11.0":
   version "3.11.0"
   resolved "https://registry.yarnpkg.com/@graphql-yoga/plugin-defer-stream/-/plugin-defer-stream-3.11.0.tgz#0520b00e461a21f3a3cb818df07fb8f9b85d3671"
