@@ -30,7 +30,6 @@ export const resolvers = {
     },
 
     Query: {
-        books: () => books,
         me: (_, args, {user}) => user,
     },
     MeResult: {

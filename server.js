@@ -76,6 +76,6 @@ export async function startYogaServer(typeDefs, resolvers) {
       console.log(`Env: ${process.env.NODE_ENV}`)
 
       server.listen(PORT, () => {
-        console.info(`Server is running on http://localhost:${PORT}/graphql`)
+        console.info(`Server is listening on port ${PORT}/`)
     }) 
 }

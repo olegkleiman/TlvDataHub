@@ -12,12 +12,6 @@ export const typeDefs = `#graphql
         id: ID!
     }
 
-    type Book implements Node {
-        id: ID!
-        title: String!
-        author: String
-    }
-
     type User {
         name: String
         email: String
@@ -65,8 +59,16 @@ export const typeDefs = `#graphql
 
     type TaxAccount implements Node {
         id: ID!
-        city: String!
-        amount: Float!
+        accountNumber: String!
+        street: String
+        payments: [TaxPayment]
+    }
+
+    type TaxPayment implements Node {
+        id: ID!
+        period: String
+        bill: String
+        amount: String
     }
 
     type ParkingTicket implements Node {
@@ -84,8 +86,6 @@ export const typeDefs = `#graphql
 
     type Query {
         me: User # MeResult
-        
-        books: [Book]
     }
 
     type Mutation {

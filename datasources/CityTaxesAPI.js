@@ -15,7 +15,7 @@ class CityTaxesAPI {
             const requestPayload = {
                 "yitrotLakoach_Request_MT": 
                 {
-                    "misparZihuy": this.#userId,
+                    "misparZihuy": "300618287", // this.#userId,
                     "sugZihuy": 1
                 }
             }
@@ -38,19 +38,25 @@ class CityTaxesAPI {
             const root = await resp.json();
             const taxes = root.yitrotLakoach_Response_MT
 
-            return [
-                    {
-                        id: 1,
-                        city: 'New York',
-                        amount: 1000
-                    },
-                    {
-                        id: 2,
-                        city: 'San Francisco',
-                        amount: 2000
-                    }
-            ];            
+            var accounts = taxes.netuneyCheshbonChoze.map( account => {
 
+                const _account = {
+                    accountNumber : account.misparCheshbonChoze,
+                    street: account.shemHaRechov,
+                    payments: account.perutYitrot.map( payment => {
+                        console.info(payment)
+                        return {
+                            period: payment.teurChiyuv,
+                            bill: payment.misparShovar,
+                            amount: payment.schumShovarAcharonKolelRibitAdkanit
+                        }
+                    })
+                }
+
+                return _account;
+            })
+
+            return accounts;
         })();
     }
 }
