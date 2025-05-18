@@ -53,10 +53,13 @@ class ParkingAPI {
             const tickets = root.DigitelParkingPaymentsReports_Response_MT;
             
             const _tickets = tickets.map( item => {
+                if (parseInt(item.returnCode, 10) == 1 )
+                    return null;
+
                 return {
                     ticketNumber: item.reportNumber,
                     vehicleNumber: item.carNumber,
-                    amount: item.outstandingBalance.trim(),
+                    amount: item.outstandingBalance?.trim(),
                     issuedAt: item.offensePlace,
                     issuedWhen: `${item.offenseDate} ${item.offenseTime}`,
                     desc: item.ofenseParagraph,
