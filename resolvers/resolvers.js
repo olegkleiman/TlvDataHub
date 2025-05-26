@@ -3,19 +3,6 @@ import { setTimeout as setTimeout$ } from 'node:timers/promises'
 import UserProfileAPI from '../datasources/UserProfileAPI.js'
 import ParkingAPI from '../datasources/ParkingAPI.js';
 import CityTaxesAPI from '../datasources/CityTaxesAPI.js';
-  
-const books = [
-    {
-        id: 1,
-        title: 'The Awakening',
-        author: 'Kate Chopin',
-    },
-    {
-        id: 2,
-        title: 'City of Glass',
-        author: 'Paul Auster',
-    },
-  ];
 
   // Resolver map
 export const resolvers = {

@@ -21,7 +21,7 @@ export async function startApolloServer(typeDefs, resolvers) {
     const server = new ApolloServer({
         typeDefs,
         resolvers,
-        degug: true,
+        debug: true,
         introspection: true,
         includeStacktraceInErrorResponses: false // see: https://www.apollographql.com/docs/apollo-server/data/errors
     });
@@ -48,6 +48,7 @@ export async function startApolloServer(typeDefs, resolvers) {
 };  
 
 export async function startYogaServer(typeDefs, resolvers) {
+
     const yoga = createYoga({
         schema: createSchema({
           typeDefs,
@@ -59,7 +60,7 @@ export async function startYogaServer(typeDefs, resolvers) {
             return { user };
         },
         batching: true,
-        logging: 'debug',
+        logging: true,
         graphqlEndpoint: '/',
         plugins: [
             useDeferStream(),

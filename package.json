@@ -9,6 +9,8 @@
   "type": "module",
   "dependencies": {
     "@apollo/server": "^4.11.3",
+    "@graphql-tools/graphql-file-loader": "^8.0.19",
+    "@graphql-tools/load": "^8.1.0",
     "@graphql-yoga/plugin-csrf-prevention": "^3.11.0",
     "@graphql-yoga/plugin-defer-stream": "^3.11.0",
     "dataloader": "^2.2.3",
