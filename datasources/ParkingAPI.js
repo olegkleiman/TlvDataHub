@@ -53,8 +53,14 @@ class ParkingAPI {
             const tickets = root.DigitelParkingPaymentsReports_Response_MT;
             
             const _tickets = tickets.map( item => {
-                if (parseInt(item.returnCode, 10) == 1 )
-                    return null;
+                if (parseInt(item.returnCode, 10) == 1 ) {
+                    return {
+                            id: 222,
+                            ticketNumber: "11"
+                    }
+
+                }
+                    // return null;
 
                 return {
                     ticketNumber: item.reportNumber,

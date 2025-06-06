@@ -61,6 +61,7 @@ export async function startYogaServer(typeDefs, resolvers) {
         },
         batching: true,
         logging: true,
+        introspection: true, // (default)
         graphqlEndpoint: '/',
         plugins: [
             useDeferStream(),

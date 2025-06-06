@@ -10,11 +10,24 @@ interface Node {
     id: ID!
 }
 
+type Book implements Node {
+    id: ID!
+    title: String!
+    author: Author!
+}
+
+type Author implements Node {
+    id: ID!
+    name: String!
+    books: [Book]
+}
+
 type User {
     name: String
     email: String
     phoneNumber: String
     userId: String,
+    books: [Book!]
     profilePicture: String
     cityTaxes: [TaxAccount]
     parkingTickets(ticketNumber: String): [ParkingTicket]
@@ -84,6 +97,9 @@ type ParkingTicket implements Node {
 
 type Query {
     me: User # MeResult
+
+    book(id: ID!): Book
+    authors: [Author!]
 }
 
 type Mutation {

@@ -1,8 +1,23 @@
 import { setTimeout as setTimeout$ } from 'node:timers/promises'
+import { v4 as uuidv4 } from 'uuid'
 
 import UserProfileAPI from '../datasources/UserProfileAPI.js'
 import ParkingAPI from '../datasources/ParkingAPI.js';
 import CityTaxesAPI from '../datasources/CityTaxesAPI.js';
+
+const books = [
+    { id: 1, title: '1984', author: 'George Orwell' },
+    { id: 2, title: 'To Kill a Mockingbird', author: 'Harper Lee' },
+    { id: 3, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald' },
+    { id: 4, title: 'The Catcher in the Rye', author: 'J.D. Salinger' },
+    { id: 5, title: 'Pride and Prejudice', author: 'Jane Austen' },
+    { id: 6, title: 'The Hobbit', author: 'J.R.R. Tolkien' },
+    { id: 7, title: 'Fahrenheit 451', author: 'Ray Bradbury' },
+    { id: 8, title: 'Brave New World', author: 'Aldous Huxley' },
+]
+
+import { DefaultAzureCredential } from'@azure/identity';
+const credential = new DefaultAzureCredential();
 
   // Resolver map
 export const resolvers = {
@@ -18,6 +33,17 @@ export const resolvers = {
 
     Query: {
         me: (_, args, {user}) => user,
+        
+    },
+    Book: {
+        author: (parent) => {
+
+            const res = books.find(book => book.author.includes(parent.author));
+            return {
+                id: uuidv4(),
+                name: res.author
+            }
+        },
     },
     MeResult: {
         __resolveType(obj, context, info) {
@@ -30,6 +56,9 @@ export const resolvers = {
         },
     },
     User: {
+        books: (_, args) => {
+            return books
+        },
 
         profilePicture(parent) {
             const api = new UserProfileAPI(parent.userId)
@@ -42,9 +71,12 @@ export const resolvers = {
         },        
 
         parkingTickets: async (parent, {ticketNumber}, {user}, info) => {
-            await setTimeout$(2000); // Simulate delay
+
+            const token = await credential.getToken("https://database.windows.net/")
+
             const api = new ParkingAPI(parent.userId)
-            return api.getTickets(ticketNumber)    
+            const tickets = await api.getTickets(ticketNumber)
+            return tickets;
         }
     },
 
