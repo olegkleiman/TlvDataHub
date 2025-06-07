@@ -43,11 +43,18 @@ export const authenticateUser = async (req) => {
         })
     }
 
-    // At this point JWT is validated
-    // let's see its claims
+    // At this point JWT is validated and may be safely decoded.
+    // Let's see its claims
     const claims = jwtDecode(token);
     const scope = claims.scp
 
     const user = await resp.json();    
-    return user;
+    return {
+        userId: user.userId,
+        name: user.name,
+        lastName: claims.family_name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        scope: scope
+    };
 }

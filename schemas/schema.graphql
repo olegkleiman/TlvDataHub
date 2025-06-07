@@ -24,6 +24,7 @@ type Author implements Node {
 
 type User {
     name: String
+    lastName: String
     email: String
     phoneNumber: String
     userId: String,
