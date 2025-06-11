@@ -78,6 +78,10 @@ export default class ParkingTagsAPI {
                const tags = root.RequestForParkingTagsByIDNumber_Response_MT.ResponseForParkingTagsByIDNumber;
 
                const _tags = tags.map(item => {
+                    
+                    const hash = crypto.createHash('sha256');
+                    const id = hash.update(item.TavNumber).digest('hex');
+
                     const expirationDate = new Date();
                     const expirationYear= item.ToDate.substring(0, 4);
                     const expirationMonth = item.ToDate.substring(4, 6) - 1; // Months are 0-based in JavaScript
@@ -85,6 +89,7 @@ export default class ParkingTagsAPI {
                     expirationDate.setFullYear(expirationYear, expirationMonth, expirationDay);
                     expirationDate.setHours(0, 0, 0, 0);
                     return {
+                        id: id,
                         tagNumber: item.TavNumber,
                         vehicleNumber: item.PlateNumber,
                         parkingAreas: [item.ParkingArea],
