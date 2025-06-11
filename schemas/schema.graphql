@@ -79,7 +79,6 @@ type ParkingTag implements Node {
     address: String
     geographicArea: String
     vehicleNumber: String!
-    parkingAreas: [String!]
     expirationDate: Date
 }
 
