@@ -1,4 +1,6 @@
-class ParkingAPI {
+import crypto from 'crypto';
+
+class ParkingTicketsAPI {
 
     // Private fields
     #userId;
@@ -52,15 +54,32 @@ class ParkingAPI {
             const root = await resp.json();
             const tickets = root.DigitelParkingPaymentsReports_Response_MT;
             
-            const _tickets = tickets.map( item => {
-                if (parseInt(item.returnCode, 10) == 1 ) {
-                    return {
-                            id: 222,
-                            ticketNumber: "11"
-                    }
+            if( parseInt(tickets[0].returnCode) == 1 ) {
+                // No tickets found
+                if (process.env.NODE_ENV === 'DEMO' ) {
+                    const _ticketNumber = ticketNumber ?? "1234567890"
+                    const hash = crypto.createHash('sha256')
+                                .update(_ticketNumber);
+                    const lastDate = new Date();
+                    lastDate.setFullYear(2025, 10, 22); // Nov., 22. Months are (0-based)
 
-                }
-                    // return null;
+                    return [{   
+                        id: hash.digest('hex'),
+                        ticketNumber: _ticketNumber,
+                        vehicleNumber: "123-456-78",
+                        amount: "250.00",
+                        issuedAt: "רחוב אבן גבירול 110, תל אביב",
+                        issuedWhen: new Date(),
+                        desc: "Parking violation description",
+                        images: ['pla_2001371540_1_10x04x2024x07x29x16.JPG', 
+                                'pla_2001371540_2_10x04x2024x07x29x17.JPG'],
+                        lastPaymnetDate: lastDate
+                    }]
+                } else
+                    return [];
+            }
+
+            const _tickets = tickets.map( item => {
 
                 return {
                     ticketNumber: item.reportNumber,
@@ -76,8 +95,7 @@ class ParkingAPI {
             return _tickets;
         })();
 
-
     }
 }
 
-export default ParkingAPI;
+export default ParkingTicketsAPI;

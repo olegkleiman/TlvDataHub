@@ -42,13 +42,13 @@ class CityTaxesAPI {
 
                 const _account = {
                     accountNumber : account.misparCheshbonChoze,
-                    street: account.shemHaRechov,
+                    street: `${account.shemHaRechov} ${account.misparHaBayit}`,
                     payments: account.perutYitrot.map( payment => {
                         console.info(payment)
                         return {
                             period: payment.teurChiyuv,
                             bill: payment.misparShovar,
-                            amount: payment.schumShovarAcharonKolelRibitAdkanit
+                            amount: payment.yitratChovLeloShovarShotefKolelRibitAdkanit.trim()
                         }
                     })
                 }

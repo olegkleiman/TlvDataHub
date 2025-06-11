@@ -22,17 +22,7 @@ type Author implements Node {
     books: [Book]
 }
 
-type User {
-    name: String
-    lastName: String
-    email: String
-    phoneNumber: String
-    userId: String,
-    books: [Book!]
-    profilePicture: String
-    cityTaxes: [TaxAccount]
-    parkingTickets(ticketNumber: String): [ParkingTicket]
-}
+
 
 """An edge in a connection."""
 type UserParkingTicketEdge {
@@ -83,22 +73,49 @@ type TaxPayment implements Node {
     amount: String
 }
 
+type ParkingTag implements Node {
+    id: ID!
+    tagNumber: String!
+    address: String
+    geographicArea: String
+    vehicleNumber: String!
+    parkingAreas: [String!]
+    expirationDate: Date
+}
+
 type ParkingTicket implements Node {
     id: ID!
     ticketNumber: String!
     vehicleNumber: String!
     amount: String!
     issuedAt: String
-    issuedWhen: String!
+    issuedWhen: Date!
     desc: String
-    images: String
-    pictures: [String!]!
-    lastPaymnetDate: String
+    images: [String!]
+    lastPaymnetDate: Date
+}
+
+type User  implements Node{
+    id: ID!
+
+    name: String
+    lastName: String
+    email: String
+    phoneNumber: String
+    userId: String!
+    address: String
+
+    profilePicture: String
+
+    cityTaxes: [TaxAccount]
+    parkingTags : [ParkingTag]
+    parkingTickets(ticketNumber: String): [ParkingTicket]
 }
 
 type Query {
     me: User # MeResult
-
+   
+    books: [Book!]
     book(id: ID!): Book
     authors: [Author!]
 }

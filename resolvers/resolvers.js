@@ -2,7 +2,8 @@ import { setTimeout as setTimeout$ } from 'node:timers/promises'
 import { v4 as uuidv4 } from 'uuid'
 
 import UserProfileAPI from '../datasources/UserProfileAPI.js'
-import ParkingAPI from '../datasources/ParkingAPI.js';
+import ParkingTicketsAPI from '../datasources/ParkingTicketsAPI.js';
+import ParkingTagsAPI from '../datasources/ParkingTagsAPI.js';
 import CityTaxesAPI from '../datasources/CityTaxesAPI.js';
 
 const books = [
@@ -56,9 +57,9 @@ export const resolvers = {
         },
     },
     User: {
-        books: (_, args) => {
-            return books
-        },
+        // books: (_, args) => {
+        //     return books
+        // },
 
         profilePicture(parent) {
             const api = new UserProfileAPI(parent.userId)
@@ -72,19 +73,27 @@ export const resolvers = {
 
         parkingTickets: async (parent, {ticketNumber}, {user}, info) => {
 
-            const token = await credential.getToken("https://database.windows.net/")
+            //const token = await credential.getToken("https://database.windows.net/")
 
-            const api = new ParkingAPI(parent.userId)
+            const api = new ParkingTicketsAPI(user.userId)
             const tickets = await api.getTickets(ticketNumber)
             return tickets;
+        },
+
+        parkingTags: async (parent, args, {user}, info) => {
+
+            const api = new ParkingTagsAPI(user.userId)
+            const tags = await api.getTags()
+            return tags;
         }
     },
 
     ParkingTicket: {
-        async *pictures(parent, args, {user}, info) {
-            for (const character of ['a', 'b', 'c', 'd', 'e', 'f', 'g']) {
-              yield character
-              await setTimeout$(1000)
+        async *images(parent, args, {user}, info) {
+            const imagesURL = process.env.PARKING_IMAGES_URL;
+            for (const imageName of parent.images) {
+              yield imagesURL+imageName
+              //await setTimeout$(50)
             }
           },
     }
