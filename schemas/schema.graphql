@@ -94,7 +94,16 @@ type ParkingTicket implements Node {
     lastPaymnetDate: Date
 }
 
-type User  implements Node{
+type PublicEvent implements Node {
+    id: ID!
+    name: String!
+    description: String
+    date: Date
+    address: String
+    image: String
+}
+
+type User  implements Node {
     id: ID!
 
     name: String
@@ -104,6 +113,8 @@ type User  implements Node{
     userId: String!
     address: String
 
+    interests: [String]
+    publicEvents(filter: String, skip: Int, take: Int): [PublicEvent]
     profilePicture: String
 
     cityTaxes: [TaxAccount]

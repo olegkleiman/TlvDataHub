@@ -5,6 +5,7 @@ import UserProfileAPI from '../datasources/UserProfileAPI.js'
 import ParkingTicketsAPI from '../datasources/ParkingTicketsAPI.js';
 import ParkingTagsAPI from '../datasources/ParkingTagsAPI.js';
 import CityTaxesAPI from '../datasources/CityTaxesAPI.js';
+import PublicEventsAPI from '../datasources/PublicEventsAPI.js';
 
 const books = [
     { id: 1, title: '1984', author: 'George Orwell' },
@@ -60,6 +61,14 @@ export const resolvers = {
         // books: (_, args) => {
         //     return books
         // },
+        interests: (parent, args, {user}, info) => {
+            return ["books", "movies", "music"]
+        },
+
+        publicEvents: async (parent, {filter, skip, take}, {user}, info) => {
+            const api = new PublicEventsAPI(user.userId)
+            return await api.getEvents(filter, skip, take)
+        },
 
         profilePicture(parent) {
             const api = new UserProfileAPI(parent.userId)

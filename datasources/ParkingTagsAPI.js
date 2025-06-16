@@ -1,14 +1,13 @@
 import crypto from 'crypto';
 
 export default class ParkingTagsAPI {
-        // Private fields
+    // Private fields
     #userId;
 
     constructor(userId) {
 
         this.#userId = userId
     }
-
 
     getTags() {
 
