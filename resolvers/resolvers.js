@@ -6,6 +6,7 @@ import ParkingTicketsAPI from '../datasources/ParkingTicketsAPI.js';
 import ParkingTagsAPI from '../datasources/ParkingTagsAPI.js';
 import CityTaxesAPI from '../datasources/CityTaxesAPI.js';
 import PublicEventsAPI from '../datasources/PublicEventsAPI.js';
+import { dateScalar } from '../DateScalar.js';
 
 const books = [
     { id: 1, title: '1984', author: 'George Orwell' },
@@ -62,12 +63,17 @@ export const resolvers = {
         //     return books
         // },
         interests: (parent, args, {user}, info) => {
-            return ["books", "movies", "music"]
+            return["books", "movies", "music"]
         },
 
-        publicEvents: async (parent, {filter, skip, take}, {user}, info) => {
+        // publicEvents: async (parent, {filter, skip, take}, {user}, info) => {
+        //     const api = new PublicEventsAPI(user.userId)
+        //     return await api.getEvents(filter, skip, take)
+        // },
+
+        publicEventsConnection: async (parent, {filter, first, after, last, before}, {user}, info) => {
             const api = new PublicEventsAPI(user.userId)
-            return await api.getEvents(filter, skip, take)
+            return await api.getEventsConnection(filter, first, after, last, before)
         },
 
         profilePicture(parent) {
