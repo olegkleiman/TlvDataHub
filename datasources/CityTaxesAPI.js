@@ -15,7 +15,7 @@ class CityTaxesAPI {
             const requestPayload = {
                 "yitrotLakoach_Request_MT": 
                 {
-                    "misparZihuy": "300618287", // this.#userId,
+                    "misparZihuy":  "072400534", //"300618287", // this.#userId,
                     "sugZihuy": 1
                 }
             }
