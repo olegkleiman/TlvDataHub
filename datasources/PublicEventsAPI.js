@@ -17,7 +17,7 @@ export default class PublicEventsAPI {
         return parseInt(Buffer.from(cursor, 'base64').toString(), 10);
     }
 
-    getEventsConnection(filter, first = 5, after) {
+    getEventsConnection(filter = 'all', first = 5, after) {
         return ( async() => {
                         
             var userId = this.#userId;
